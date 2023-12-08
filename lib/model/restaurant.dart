@@ -7,7 +7,6 @@ class Restaurant {
   final String pictureId;
   final String city;
   final double rating;
-  // final List<Menus> menus;
   final Menus menus;
   Restaurant({
     required this.id,
@@ -26,9 +25,8 @@ class Restaurant {
         description: restaurant['description'],
         pictureId: restaurant['pictureId'],
         city: restaurant['city'],
-        rating: restaurant['rating'],
+        rating: double.parse(restaurant['rating'].toString()),
         menus: Menus.fromJson(restaurant['menus']));
-    // menus: parseMenus(restaurant['menus']));
   }
 }
 

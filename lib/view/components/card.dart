@@ -20,7 +20,7 @@ class CustomCard extends StatelessWidget {
   /// Restaurant Location (City) on String
   final String city;
 
-  /// Restaurant Rating on double
+  /// Restaurant Rating on integer
   final double rating;
 
   /// Restaurant UUID on String

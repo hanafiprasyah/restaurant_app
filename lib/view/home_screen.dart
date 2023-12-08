@@ -41,10 +41,8 @@ class HomeScreen extends StatelessWidget {
             ];
           },
           body: FutureBuilder<String>(
-            future: DefaultAssetBundle.of(context).loadString(
-              'assets/local_restaurant.json',
-              cache: true,
-            ),
+            future: DefaultAssetBundle.of(context)
+                .loadString('assets/local_restaurant.json'),
             builder: (context, snapshot) {
               final List<Restaurant> restaurant =
                   parseRestaurant(snapshot.data);
@@ -75,7 +73,7 @@ class HomeScreen extends StatelessWidget {
         imageUrl: restaurant.pictureId,
         name: restaurant.name,
         city: restaurant.city,
-        rating: restaurant.rating,
+        rating: restaurant.rating.toDouble(),
       ),
     );
   }
