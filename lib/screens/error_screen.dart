@@ -5,7 +5,6 @@ class ErrorPage extends StatelessWidget {
 
   /// This page will displayed if user
   /// navigate to unknown routes
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

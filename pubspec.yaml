@@ -1,9 +1,9 @@
 name: restaurant_app
-description: First submission of Dicoding Intermediate Class
+description: "Submission app for Dicoding Intermediate Class"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 2.1.1
 
 environment:
   sdk: '>=3.2.3 <=4.0.0'
@@ -12,8 +12,38 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://pub.dev/packages/responsive_builder
+  responsive_builder: ^0.7.0
+  # https://pub.dev/packages/motion_toast
+  motion_toast: ^2.7.9
+  # https://pub.dev/packages/connectivity_plus
+  connectivity_plus: ^5.0.2
+  # https://pub.dev/packages/flutter_rating_stars
+  flutter_rating_stars: ^1.0.3+4
+  # https://pub.dev/packages/searchable_listview
+  # searchable_listview: ^2.9.1
+  # https://pub.dev/packages/animate_do
+  animate_do: ^3.1.2
+  # https://pub.dev/packages/loading_animation_widget
+  loading_animation_widget: ^1.2.0+4
+  # https://pub.dev/packages/auto_animated
+  auto_animated: ^3.2.0
+  # https://pub.dev/packages/google_nav_bar
+  google_nav_bar: ^5.0.6
+  # https://pub.dev/packages/provider
+  provider: ^6.1.1
+  # https://pub.dev/packages/http
+  http: ^1.1.2
+  # https://pub.dev/packages/flutter_native_splash
+  flutter_native_splash: ^2.3.8
+  # https://pub.dev/packages/cached_network_image
+  cached_network_image: ^3.3.0
+  # https://pub.dev/packages/cupertino_icons
   cupertino_icons: ^1.0.6
+  # google_fonts: ^6.1.0
   google_fonts: 6.1.0
+  # https://pub.dev/packages/device_preview
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -26,4 +56,5 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/local_restaurant.json

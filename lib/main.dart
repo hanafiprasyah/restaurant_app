@@ -1,15 +1,41 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/model/restaurant.dart';
-import 'package:restaurant_app/view/404.dart';
-import 'package:restaurant_app/view/detail_page.dart';
-import 'package:restaurant_app/view/home_screen.dart';
-
-/// Cheat from me:
-/// Started with braces it is means that you have the Map
-/// Started with square bracket it is means that you have the List of the Map
+import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:restaurant_app/models/restaurants/restaurant.dart';
+import 'package:restaurant_app/screens/detail_screen.dart';
+import 'package:restaurant_app/screens/error_screen.dart';
+import 'package:restaurant_app/screens/home_screen.dart';
+import 'package:restaurant_app/services/api_service.dart';
+import 'package:restaurant_app/services/data_provider.dart';
+import 'package:restaurant_app/services/screen_provider.dart';
 
 void main() {
-  runApp(const App());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => MultiProvider(
+      providers: [
+        ChangeNotifierProvider<RestaurantListProvider>(
+          create: (_) => RestaurantListProvider(apiService: ApiService()),
+        ),
+        ChangeNotifierProvider<SelectedHomePageProvider>(
+          create: (_) => SelectedHomePageProvider(),
+        ),
+        ChangeNotifierProvider<ConnectivityListenerProvider>(
+          create: (_) => ConnectivityListenerProvider(),
+        ),
+        ChangeNotifierProvider<SelectViewHomeProvider>(
+          create: (_) => SelectViewHomeProvider(),
+        ),
+        ChangeNotifierProvider<RestaurantDetailProvider>(
+          create: (_) => RestaurantDetailProvider(),
+        ),
+      ],
+      child: const App(),
+    ),
+  ));
 }
 
 class App extends StatelessWidget {
@@ -17,21 +43,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ResponsiveApp(
+      preferDesktop: false,
+      builder: (_) => MaterialApp(
         title: "Restaurant App",
-        theme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.indigo,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        locale: const Locale('id', 'ID'),
-        onUnknownRoute: (settings) =>
-            MaterialPageRoute(builder: (_) => const ErrorPage()),
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         debugShowMaterialGrid: false,
@@ -39,7 +58,13 @@ class App extends StatelessWidget {
         routes: {
           "/": (context) => const HomeScreen(),
           "/detail": (context) => DetailPage(
-              data: ModalRoute.of(context)?.settings.arguments as Restaurant)
-        });
+                data: ModalRoute.of(context)?.settings.arguments
+                    as RestaurantElement,
+              ),
+        },
+        onUnknownRoute: (settings) =>
+            MaterialPageRoute(builder: (_) => const ErrorPage()),
+      ),
+    );
   }
 }
