@@ -38,10 +38,19 @@ class ApiService {
   }
 
   Future<RestaurantList> restaurantSearch(String name) async {
+    /// URL: https://restaurant-api.dicoding.dev/search?q=<RESTAURANT NAME>
     final response = await http.get(
-        Uri(host: _baseURL, scheme: 'https', path: 'search', query: 'q=$name'));
+      Uri(
+        host: 'restaurant-api.dicoding.dev',
+        scheme: 'https',
+        path: 'search',
+        query: 'q=$name',
+      ),
+    );
+
     if (response.statusCode == 200) {
-      return RestaurantList.fromJson(json.decode(response.body));
+      var dataRestaurants = json.decode(response.body);
+      return RestaurantList.fromJson(dataRestaurants);
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw Exception('Bad syntax: Error caught by client side.');
     } else if (response.statusCode >= 500) {

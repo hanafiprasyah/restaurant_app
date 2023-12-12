@@ -32,6 +32,9 @@ void main() {
         ChangeNotifierProvider<RestaurantDetailProvider>(
           create: (_) => RestaurantDetailProvider(),
         ),
+        ChangeNotifierProvider<RestaurantSearchProvider>(
+          create: (_) => RestaurantSearchProvider(apiService: ApiService()),
+        ),
       ],
       child: const App(),
     ),
