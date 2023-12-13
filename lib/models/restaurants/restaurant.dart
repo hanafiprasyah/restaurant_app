@@ -1,13 +1,13 @@
 class RestaurantList {
-  bool error;
-  String message;
-  int count;
+  bool? error;
+  String? message;
+  int? count;
   List<RestaurantElement> restaurants;
 
   RestaurantList({
-    required this.error,
-    required this.message,
-    required this.count,
+    this.error,
+    this.message,
+    this.count,
     required this.restaurants,
   });
 
