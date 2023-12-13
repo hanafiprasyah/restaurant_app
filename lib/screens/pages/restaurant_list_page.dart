@@ -183,13 +183,23 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                         );
                 } else if (state.state == ResultState.noData) {
                   return Center(
-                    child: Material(child: Text(state.msg)),
+                    child: Material(
+                        child: Text(
+                      state.msg,
+                      style: GoogleFonts.quicksand(),
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                    )),
                   );
                 } else if (state.state == ResultState.error) {
                   return Center(
                     child: Material(
                         child: Text(
-                            'Error. ${state.msg} Please reload your app.')),
+                      'Error: ${state.msg}',
+                      style: GoogleFonts.quicksand(),
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                    )),
                   );
                 } else {
                   return const Center(

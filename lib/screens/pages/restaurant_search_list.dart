@@ -1,5 +1,6 @@
 import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/components/card.dart';
@@ -61,6 +62,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                        */
                       enabled: true,
                       labelText: 'Search restaurant name',
+                      labelStyle: GoogleFonts.quicksand(),
                       suffixIcon: const Icon(
                         Icons.search_rounded,
                         color: Colors.indigo,
@@ -69,7 +71,7 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: IconButton(
                     onPressed: () {
                       /// TODO: clear the search list view
@@ -91,10 +93,14 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
           child: Consumer<RestaurantSearchProvider>(
             builder: (context, state, _) {
               if (state.state == SearchState.searching) {
-                return const Center(
+                return Center(
                   child: Material(
                     child: Text(
-                        'Please type only the restaurant name or similar name..'),
+                      'What are you looking for? Type the restaurant name or their menus..',
+                      style: GoogleFonts.quicksand(),
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                    ),
                   ),
                 );
               } else if (state.state == SearchState.loading) {
@@ -142,16 +148,33 @@ class _SearchRestaurantPageState extends State<SearchRestaurantPage> {
                 );
               } else if (state.state == SearchState.noData) {
                 return Center(
-                  child: Material(child: Text(state.msg)),
+                  child: Material(
+                      child: Text(
+                    state.msg,
+                    style: GoogleFonts.quicksand(),
+                    maxLines: 2,
+                    overflow: TextOverflow.clip,
+                  )),
                 );
               } else if (state.state == SearchState.error) {
                 return Center(
-                  child: Material(child: Text(state.msg)),
+                  child: Material(
+                      child: Text(
+                    state.msg,
+                    style: GoogleFonts.quicksand(),
+                    maxLines: 2,
+                    overflow: TextOverflow.clip,
+                  )),
                 );
               } else {
-                return const Center(
+                return Center(
                   child: Material(
-                    child: Text('Search your favourite restaurant here!'),
+                    child: Text(
+                      'Search your favourite restaurant here!',
+                      style: GoogleFonts.quicksand(),
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                    ),
                   ),
                 );
               }

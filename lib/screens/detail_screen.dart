@@ -2,8 +2,6 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:motion_toast/motion_toast.dart';
-import 'package:motion_toast/resources/arrays.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/models/restaurants/restaurant.dart';
 import 'package:restaurant_app/services/data_provider.dart';
@@ -49,18 +47,21 @@ class _DetailPageState extends State<DetailPage> {
                     elevation: 0,
                     leading: IconButton(
                       onPressed: () {
-                        MotionToast.info(
-                          title: Text("My Apologize",
-                              style: GoogleFonts.quicksand()),
-                          description: Text(
-                            "This feature will be coming soon!",
-                            style: GoogleFonts.quicksand(),
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Coming soon!',
+                              style: GoogleFonts.quicksand(),
+                              maxLines: 2,
+                              overflow: TextOverflow.clip,
+                            ),
+                            duration: const Duration(milliseconds: 750),
+                            elevation: 0,
+                            dismissDirection: DismissDirection.down,
+                            showCloseIcon: true,
+                            closeIconColor: Colors.white,
                           ),
-                          dismissable: true,
-                          position: MotionToastPosition.top,
-                          animationType: AnimationType.fromTop,
-                          animationDuration: const Duration(milliseconds: 750),
-                        ).show(context);
+                        );
                       },
                       icon: const Icon(Icons.favorite, color: Colors.redAccent),
                       iconSize: 32,

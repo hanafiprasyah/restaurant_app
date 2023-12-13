@@ -106,8 +106,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: context.watch<ConnectivityListenerProvider>().offline == true
-            ? const Center(
-                child: Text('No internet access.'),
+            ? Center(
+                child: Text(
+                  'No internet access.',
+                  style: GoogleFonts.quicksand(),
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
+                ),
               )
             : pages.elementAt(context.watch<SelectedHomePageProvider>().index),
       ),
