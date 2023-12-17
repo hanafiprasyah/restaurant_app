@@ -17,11 +17,15 @@ class ErrorPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Center(
-          child: Text(
-            '404 Not Found. Please back to previous page!',
-            style: GoogleFonts.quicksand(),
-            maxLines: 2,
-            overflow: TextOverflow.clip,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              '404 Not Found. Please back to previous page!',
+              style: GoogleFonts.quicksand(),
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.clip,
+            ),
           ),
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BookedRestaurantPage extends StatelessWidget {
-  const BookedRestaurantPage({super.key});
+class FavouriteRestaurantPage extends StatelessWidget {
+  const FavouriteRestaurantPage({super.key});
 
   @override
   Widget build(BuildContext context) {
