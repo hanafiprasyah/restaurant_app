@@ -4,12 +4,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/screens/pages/booked_restaurant_page.dart';
+import 'package:restaurant_app/screens/pages/favourite_restaurant_page.dart';
 import 'package:restaurant_app/screens/pages/restaurant_list_page.dart';
 import 'package:restaurant_app/screens/pages/restaurant_search_list.dart';
 import 'package:restaurant_app/screens/pages/settings_page.dart';
-import 'package:restaurant_app/services/screen_provider.dart';
+import 'package:restaurant_app/services/helper/notification_helper.dart';
+import 'package:restaurant_app/services/provider/screen/connection_provider.dart';
+import 'package:restaurant_app/services/provider/screen/home_page_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,8 +22,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final NotificationHelper notificationHelper = NotificationHelper();
   StreamSubscription? connection;
-
   @override
   void initState() {
     super.initState();
@@ -31,19 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
         context.read<ConnectivityListenerProvider>().setOnline(result);
       }
     });
+    notificationHelper.configSelectNotificationSubject('/detail');
   }
 
   @override
   void dispose() {
     connection!.cancel();
+    selectNotificationSubject.close();
     super.dispose();
   }
 
   static const List<Widget> pages = [
     RestaurantListPage(),
-    BookedRestaurantPage(),
+    FavouriteRestaurantPage(),
     SearchRestaurantPage(),
-    SettingPage(),
+    SettingPage()
   ];
 
   @override
@@ -74,22 +79,22 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.blueGrey,
               tabs: [
                 GButton(
-                  icon: Icons.home_max_rounded,
+                  icon: Ionicons.home_outline,
                   textStyle: GoogleFonts.quicksand(fontSize: 12),
                   text: 'Home',
                 ),
                 GButton(
-                  icon: Icons.bookmark_add_rounded,
+                  icon: Ionicons.heart_outline,
                   textStyle: GoogleFonts.quicksand(fontSize: 12),
-                  text: 'Booked',
+                  text: 'Favourite',
                 ),
                 GButton(
-                  icon: Icons.search_rounded,
+                  icon: Ionicons.search_outline,
                   textStyle: GoogleFonts.quicksand(fontSize: 12),
                   text: 'Search',
                 ),
                 GButton(
-                  icon: Icons.settings,
+                  icon: Ionicons.cog_outline,
                   textStyle: GoogleFonts.quicksand(fontSize: 12),
                   text: 'Settings',
                 ),
@@ -106,12 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: context.watch<ConnectivityListenerProvider>().offline == true
-            ? Center(
-                child: Text(
-                  'No internet access.',
-                  style: GoogleFonts.quicksand(),
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
+            ? Padding(
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Text(
+                    'No internet access',
+                    style: GoogleFonts.quicksand(),
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                  ),
                 ),
               )
             : pages.elementAt(context.watch<SelectedHomePageProvider>().index),

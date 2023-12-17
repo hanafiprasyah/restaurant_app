@@ -3,31 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/components/card.dart';
-import 'package:restaurant_app/services/data_provider.dart';
-import 'package:restaurant_app/services/screen_provider.dart';
+import 'package:restaurant_app/components/cards/gridview_card.dart';
+import 'package:restaurant_app/components/cards/listview_card.dart';
+import 'package:restaurant_app/components/styles.dart';
+import 'package:restaurant_app/services/provider/data/restaurant_list_provider.dart';
+import 'package:restaurant_app/services/provider/screen/home_view_provider.dart';
 
-class RestaurantListPage extends StatefulWidget {
+class RestaurantListPage extends StatelessWidget {
   const RestaurantListPage({super.key});
-
-  @override
-  State<RestaurantListPage> createState() => _RestaurantListPageState();
-}
-
-class _RestaurantListPageState extends State<RestaurantListPage> {
-  final options = const LiveOptions(
-    delay: Duration.zero,
-    showItemInterval: Duration(milliseconds: 250),
-    showItemDuration: Duration(milliseconds: 500),
-    visibleFraction: 0.025,
-    reAnimateOnVisibility: false,
-  );
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
       physics: const BouncingScrollPhysics(),
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
+      headerSliverBuilder: (_, __) {
         return [
           SliverAppBar(
             toolbarHeight: kToolbarHeight * 2,
@@ -85,16 +74,16 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
           Expanded(
             flex: 9,
             child: Consumer<RestaurantListProvider>(
-              builder: (context, state, _) {
-                if (state.state == ResultState.loading) {
+              builder: (context, value, _) {
+                if (value.state == ResultState.loading) {
                   return Center(
                     child: LoadingAnimationWidget.fourRotatingDots(
                         color: Colors.indigo, size: 15),
                   );
-                } else if (state.state == ResultState.hasData) {
+                } else if (value.state == ResultState.hasData) {
                   return context.watch<SelectViewHomeProvider>().isGrid
                       ? LiveGrid.options(
-                          options: options,
+                          options: globalOptions,
                           padding: const EdgeInsets.all(16),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -103,14 +92,14 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                             mainAxisSpacing: 8,
                             childAspectRatio:
                                 MediaQuery.of(context).size.width /
-                                    (MediaQuery.of(context).size.height / 1.2),
+                                    (MediaQuery.of(context).size.width / 0.65),
                           ),
-                          shrinkWrap: false,
-                          itemCount: state.restaurant.restaurants.length,
+                          shrinkWrap: true,
+                          itemCount: value.restaurant.restaurants.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index, animation) {
                             var restaurant =
-                                state.restaurant.restaurants[index];
+                                value.restaurant.restaurants[index];
                             return FadeTransition(
                               opacity: Tween<double>(
                                 begin: 0,
@@ -129,7 +118,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                   /**
                                * CustomCard : lib/components/card.dart
                                */
-                                  child: VerticalListCard(
+                                  child: GridViewCard(
                                     id: restaurant.id,
                                     imageId: restaurant.pictureId,
                                     name: restaurant.name,
@@ -143,13 +132,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                           },
                         )
                       : LiveList.options(
-                          options: options,
+                          options: globalOptions,
                           shrinkWrap: false,
-                          itemCount: state.restaurant.restaurants.length,
+                          itemCount: value.restaurant.restaurants.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index, animation) {
                             var restaurant =
-                                state.restaurant.restaurants[index];
+                                value.restaurant.restaurants[index];
                             return FadeTransition(
                               opacity: Tween<double>(
                                 begin: 0,
@@ -168,7 +157,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                   /**
                                       * CustomCard : lib/components/card.dart
                                     */
-                                  child: HorizontalListCard(
+                                  child: ListViewCard(
                                     id: restaurant.id,
                                     imageId: restaurant.pictureId,
                                     name: restaurant.name,
@@ -181,29 +170,38 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                             );
                           },
                         );
-                } else if (state.state == ResultState.noData) {
+                } else if (value.state == ResultState.noData) {
                   return Center(
-                    child: Material(
-                        child: Text(
-                      state.msg,
-                      style: GoogleFonts.quicksand(),
-                      maxLines: 2,
-                      overflow: TextOverflow.clip,
-                    )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Material(
+                          child: Text(
+                        value.msg,
+                        style: GoogleFonts.quicksand(),
+                        maxLines: 2,
+                        overflow: TextOverflow.clip,
+                      )),
+                    ),
                   );
-                } else if (state.state == ResultState.error) {
+                } else if (value.state == ResultState.error) {
                   return Center(
-                    child: Material(
-                        child: Text(
-                      'Error: ${state.msg}',
-                      style: GoogleFonts.quicksand(),
-                      maxLines: 2,
-                      overflow: TextOverflow.clip,
-                    )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Material(
+                          child: Text(
+                        'Error: ${value.msg}',
+                        style: GoogleFonts.quicksand(),
+                        maxLines: 2,
+                        overflow: TextOverflow.clip,
+                      )),
+                    ),
                   );
                 } else {
                   return const Center(
-                    child: Material(child: Text('')),
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Material(child: Text('')),
+                    ),
                   );
                 }
               },

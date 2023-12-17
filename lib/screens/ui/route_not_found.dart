@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ErrorPage extends StatelessWidget {
-  const ErrorPage({super.key});
+class RouteNotFound extends StatelessWidget {
+  const RouteNotFound({super.key});
 
   /// This page will displayed if user
   /// navigate to unknown routes

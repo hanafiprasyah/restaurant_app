@@ -1,6 +1,6 @@
-import 'package:restaurant_app/models/category.dart';
-import 'package:restaurant_app/models/menu.dart';
-import 'package:restaurant_app/models/review.dart';
+import 'package:restaurant_app/models/restaurant/category.dart';
+import 'package:restaurant_app/models/restaurant/menu.dart';
+import 'package:restaurant_app/models/restaurant/review.dart';
 
 class RestaurantElement {
   String id;
@@ -46,4 +46,13 @@ class RestaurantElement {
                 json["customerReviews"].map((x) => CustomerReview.fromJson(x)))
             : [],
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "description": description,
+        "pictureId": pictureId,
+        "city": city,
+        "rating": rating,
+      };
 }

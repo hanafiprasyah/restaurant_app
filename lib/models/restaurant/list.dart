@@ -1,4 +1,4 @@
-import 'package:restaurant_app/models/restaurant.dart';
+import 'package:restaurant_app/models/restaurant/restaurant.dart';
 
 class RestaurantList {
   bool? error;
@@ -24,4 +24,8 @@ class RestaurantList {
               json["restaurants"].map((x) => RestaurantElement.fromJson(x))),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
+      };
 }
