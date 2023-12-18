@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:restaurant_app/models/restaurant/list.dart';
 import 'package:restaurant_app/services/network/api_service.dart';
 
@@ -25,7 +26,7 @@ class RestaurantListProvider extends ChangeNotifier {
       _state = ResultState.loading;
       notifyListeners();
 
-      final restaurants = await apiService.restaurantList();
+      final restaurants = await apiService.restaurantList(http.Client());
 
       if (restaurants.restaurants.isEmpty) {
         _state = ResultState.noData;

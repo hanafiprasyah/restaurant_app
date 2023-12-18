@@ -1,36 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:restaurant_app/models/restaurant/list.dart';
 import 'package:restaurant_app/services/network/api_service.dart';
 
+import 'restaurant_test.mocks.dart';
+
+@GenerateMocks([http.Client])
 void main() {
-  ApiService apiService = ApiService();
-
+  final ApiService apiService = ApiService();
   group('Restaurant API testing: ', () {
-    test(
-      'search restaurant by name: ',
-      () async {
-        /// Arrange
-        String name = "Melting Pot";
+    test('fetch restaurants list if successfully', () async {
+      final client = MockClient();
+      when(client.get(Uri.parse("https://restaurant-api.dicoding.dev/list")))
+          .thenAnswer((_) async => http.Response(
+              '{"error": false, "message": "success", "count": 20}', 200));
+      expect(await apiService.restaurantList(client), isA<RestaurantList>());
+    });
 
-        /// Act
-        final result = await apiService.restaurantSearch(name);
-
-        /// Assert
-        expect(result.restaurants[0].name, name);
-      },
-    );
-
-    test(
-      'get restaurant list detail by ID: ',
-      () async {
-        /// Arrange
-        String id = "rqdv5juczeskfw1e867";
-
-        /// Act
-        final result = await apiService.restaurantDetail(id);
-
-        /// Assert
-        expect(result.id, id);
-      },
-    );
+    test('throw an exception when restaurants list is failed to fetch', () {
+      final client = MockClient();
+      when(client.get(Uri.parse("https://restaurant-api.dicoding.dev/list")))
+          .thenAnswer((_) async =>
+              http.Response('{"error": true, "message": "Not Found"}', 404));
+      expect(apiService.restaurantList(client), throwsException);
+    });
   });
 }
